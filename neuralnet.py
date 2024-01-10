@@ -23,4 +23,4 @@ def MLP(arr,output,hiddenneurons,epochs,learning_rate):
         
         # print(hiddenneuronsresult,hiddenlayererror)
     print(outputnet)
-MLP([1,0,1,1,0,1,0,0,1],1,4,10,0.4)
+MLP([1,0,1,1,0,1,0,0,1],1,6,10,0.4)
