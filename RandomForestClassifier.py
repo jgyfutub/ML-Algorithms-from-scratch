@@ -1,7 +1,11 @@
 import pandas as pd
 import random
+from collections import Counter
 from sklearn.preprocessing import LabelEncoder
 from sklearn import tree
+import warnings
+
+warnings.filterwarnings('ignore')
 
 data = {
     "Animal": ["Dog", "Dog", "Bird", "Fish", "Snake", "Tiger", "Tiger", "Elephant", "Monkey", "Bear"],
@@ -25,24 +29,23 @@ def shuffle_within_columns(data):
 data= shuffle_within_columns(data)
 df = pd.DataFrame(data)
 
-def RandomForestClassifier(data,targetname,bootstrap=3,max_depth=2):
+def RandomForestClassifier(data,targetname,bootstrap=5,max_depth=2):
+    for i in data.columns.tolist():
+        data[i]=[float(dict(Counter(list(data[i])))[j]) for j in data[i]]
     random_row=data.sample().index[0]
     dropped_row=data.loc[random_row].copy()
+    target_of_dropped_row=dropped_row[targetname]
     data.drop(index=random_row,inplace=True)
+    dropped_row.drop([targetname], inplace=True)
     bootstrap_samples = [data.sample(frac=1, replace=True) for _ in range(bootstrap)]
     answer=[]
     for i in bootstrap_samples:
-        print(i.head())
-        features=[j for j in i.columns if i[j].dtype=="object" ]
-        encoder = LabelEncoder().fit(i[features])
-        print(features)
-        i[features]=encoder.fit_transform(i[features])
         target=i[targetname]
         i.drop([targetname],axis=1,inplace=True)
         clf = tree.DecisionTreeClassifier(criterion="entropy", max_depth=max_depth)
         clf = clf.fit(i,target)
-        y_pred = clf.predict(dropped_row)
-        answer.append(y_pred)
+        y_pred = clf.predict([dropped_row])
+        answer.append(y_pred[0])
     return max(set(answer), key=answer.count)
 
 print(RandomForestClassifier(df,'target'))
