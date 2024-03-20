@@ -4,20 +4,20 @@ import random
 import math
 
 data = {
+    'cgpa':np.random.rand(100),
+    "interactiveness":np.random.rand(100),
+    "practical":np.random.rand(100),
+    "communication":np.random.rand(100),
+    }
+
+testdata = {
     'cgpa':np.random.rand(10),
     "interactiveness":np.random.rand(10),
     "practical":np.random.rand(10),
     "communication":np.random.rand(10),
     }
-
-testdata = {
-    'cgpa':np.random.rand(6),
-    "interactiveness":np.random.rand(6),
-    "practical":np.random.rand(6),
-    "communication":np.random.rand(6),
-    }
-target={'target': np.random.randint(2, size=10)}
-testtarget={'target': np.random.randint(2, size=6)}
+target={'target': np.random.randint(2, size=100)}
+testtarget={'target': np.random.randint(2, size=10)}
 def shuffle_within_columns(data):
     for col in data:
         random.shuffle(data[col])
